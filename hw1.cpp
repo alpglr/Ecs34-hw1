@@ -93,7 +93,67 @@ std::string Strip(const std::string &str)
 
 }
 
-std::string Replace(const std::string &str, const std::string &old, const std::string &rep); 
+// Returns the center/left/right justified strings 
+std::string Center(const std::string &str, int width, char fill = ' ')
+{
+    std::string newstring = str;
+
+    std::string spaces = "";
+    int i = 0;
+    while (i < width)
+    {
+        spaces = spaces + fill;
+        i += 1;
+    }
+    newstring = spaces + newstring + spaces;
+
+    return newstring;
+
+    //NEGATIVE WIDTH ????
+    
+}
+
+std::string LJust(const std::string &str, int width, char fill = ' ')
+{
+    std::string newstring = str;
+
+    std::string spaces = "";
+    int i = 0;
+    while (i < width)
+    {
+        spaces = spaces + fill;
+        i += 1;
+    }
+    newstring = spaces + newstring;
+
+    return newstring;
+} 
+
+std::string RJust(const std::string &str, int width, char fill = ' ')
+{
+    std::string newstring = str;
+
+    std::string spaces = "";
+    int i = 0;
+    while (i < width)
+    {
+        spaces = spaces + fill;
+        i += 1;
+    }
+    newstring = newstring + spaces;
+
+    return newstring;
+}
+ 
+
+std::string Replace(const std::string &str, const std::string &old, const std::string &rep);
+    // Returns the string str with all instances of old replaced with rep
+
+// Replaces tabs with spaces aligning at the tabstops 
+std::string ExpandTabs(const std::string &str, int tabsize = 4)
+{
+    
+}
 
 int main()
 {
@@ -172,4 +232,20 @@ std::string ex2 = "what is going on!!   ";
 std::string ex2 = "what is going on!!   ";
     std::string test2 = Strip(ex2);
     std::cout << "length of new string: " << test2.length() << " " << test2 << std::endl; */
+
+
+
+/* std::string ex = "what is upp";
+std::string test = Center(ex, 1);
+std::cout << "length of new string: " << test.length() << " " << test << std::endl; */
+
+/* std::string ex = "what is upp";
+std::string test = LJust(ex, 1);
+std::cout << "length of new string: " << test.length() << " " << test << std::endl;
+ */
+
+/* std::string ex = "what is upp";
+std::string test = RJust(ex, 1);
+std::cout << "length of new string: " << test.length() << " " << test << std::endl;
+ */
 }
