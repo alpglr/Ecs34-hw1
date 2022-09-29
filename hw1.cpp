@@ -93,6 +93,7 @@ std::string Strip(const std::string &str)
 
 }
 
+std::string Replace(const std::string &str, const std::string &old, const std::string &rep); 
 
 int main()
 {
