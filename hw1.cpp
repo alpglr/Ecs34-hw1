@@ -5,22 +5,38 @@
 #include <cctype>
 #include <vector>
 
-std::string Slice(const std::string &str, ssize_t start, ssize_t end=0)
+std::string Slice(const std::string &str, ssize_t start, ssize_t end=0)   
 {
-    int strend = str.length();  //starts from index 1
+    int strend;
+    if (end == 0)
+    strend = str.length();  //slice until the end of the string
+    else
+    strend = end;    //slice until the specified bit - 1
 
-    if (strend < start)
+
+/*     if (end != 0 && end < start)
     {
         std::cout << "start index out of bounds\n";
         return str;
-    }
+    } */
     if (start < 0)
     {
-        start = strend + start;
+        start = str.length() + start;
+    }
+
+    if (strend < 0)
+    {
+        strend = str.length() + strend;
     }
     //std::cout << "the length of the string is: " << strend << std::endl;
 
-    std::string newstring = str.substr(start, strend);  //starts from index 0+1 = 1
+
+    if (start > strend)
+    {
+        return "";
+    }
+
+    std::string newstring = str.substr(start, strend-start);
     return newstring;
 } 
 
@@ -95,7 +111,7 @@ std::string Strip(const std::string &str)
 }
 
 // Returns the center/left/right justified strings 
-std::string Center(const std::string &str, int width, char fill = ' ')
+std::string Center(const std::string &str, int width, char fill = ' ')  //FIX hard code and spacing
 {
     std::string newstring = str;
 
@@ -114,7 +130,7 @@ std::string Center(const std::string &str, int width, char fill = ' ')
     
 }
 
-std::string LJust(const std::string &str, int width, char fill = ' ')
+std::string LJust(const std::string &str, int width, char fill = ' ')   //fix hard code
 {
     std::string newstring = str;
 
@@ -130,7 +146,7 @@ std::string LJust(const std::string &str, int width, char fill = ' ')
     return newstring;
 } 
 
-std::string RJust(const std::string &str, int width, char fill = ' ')
+std::string RJust(const std::string &str, int width, char fill = ' ')   //fix hard code
 {
     std::string newstring = str;
 
@@ -224,9 +240,133 @@ std::string Replace(const std::string &str, const std::string &old, const std::s
     return newstring;
 }
 
+// Splits the string up into a vector of strings based on splt parameter, if 
+// splt parameter is empty string, then split on white space
+std::vector< std::string > Split(const std::string &str, const std::string &splt = "")   //FIGURE OUT INDEX = 0 EDGE CASE
+{
+    std::vector<std::string> strs;     //https://cplusplus.com/forum/general/63211/
+    std::string tempstr = str;
+    std::string newstring = str;
+    std::vector< int > founds;    //list of split indexes    
+    int index; //= str.find(splt);
+
+
+    if (splt.empty() || splt == " ") 
+    {
+        while (index)
+       {
+            int index = newstring.find(" ");
+            if (index == -1)
+                break;
+            //std::cout << "whitespace found at: " << index << std::endl;
+            newstring = Slice(newstring, 0, index);
+            //std::cout << "pushed to vector: " << newstring << std::endl;
+            if (index != 0)
+                strs.push_back(newstring);
+            newstring = Slice(tempstr, index+1);
+            //std::cout << "rest of string to work on:" << newstring << std::endl;
+            tempstr = newstring;
+        }
+
+        if (!newstring.empty())
+        strs.push_back(newstring);  //push the last elem
+
+    }
+
+    //NOW IMPLEMENT FOR SINGLE CHAR (SAME AS ABOVE) AND SUBSTRING
+
+    if (splt.length() == 1) 
+    {
+        while (index)
+       {
+            int index = newstring.find(splt);
+            if (index == -1)
+                break;
+            //std::cout << "whitespace found at: " << index << std::endl;
+            newstring = Slice(newstring, 0, index);
+            //std::cout << "pushed to vector: " << newstring << std::endl;
+            if (index != 0)
+                strs.push_back(newstring);
+            newstring = Slice(tempstr, index+1);
+            //std::cout << "rest of string to work on:" << newstring << std::endl;
+            tempstr = newstring;
+        }
+
+        if (!newstring.empty())
+        strs.push_back(newstring);  //push the last elem
+
+    }
+
+
+    if (splt.length() > 1)   //substrs
+    {
+        //slice the length of splt
+
+        while (index)
+       {
+            int index = newstring.find(splt);
+            if (index == -1)
+                break;
+            //std::cout << "whitespace found at: " << index << std::endl;
+            newstring = Slice(newstring, 0, index);
+            //std::cout << "pushed to vector: " << newstring << std::endl;
+            if (index != 0)
+                strs.push_back(newstring);
+            newstring = Slice(tempstr, (index+splt.length()));
+            //std::cout << "rest of string to work on:" << newstring << std::endl;
+            tempstr = newstring;
+        }
+
+        if (!newstring.empty())
+        strs.push_back(newstring);  //push the last elem
+    }
+
+
+    
+/* 
+    while (index != std::string::npos)  //while there are matches
+    { 
+   
+        founds.push_back(index);
+        
+    index = str.find(splt, index+1);   
+    }
+
+    for (int i = 0; i < founds.size(); i++)
+    {
+        newstring.resize(founds[i]);
+        strs.push_back(newstring);
+        newstring = tempstr;
+    }
+
+    int lastelem = founds.size();
+    std::cout << "index: " << lastelem << "element: " << founds[lastelem] << std::endl;
+    std::cout << "sliced here: " << founds[lastelem] << std::endl;
+    newstring = Slice(newstring, founds[lastelem]);   //WILL BE CHANGED???
+    strs.push_back(newstring); */
+
+    return strs;
+
+
+}
+ 
+// Joins a vector of strings into a single string 
+std::string Join(const std::string &str, const std::vector< std::string > 
+&vect); 
 
 // Replaces tabs with spaces aligning at the tabstops 
-std::string ExpandTabs(const std::string &str, int tabsize = 4);
+std::string ExpandTabs(const std::string &str, int tabsize = 4)
+{
+    std::string rep = "";
+    for (int i = 0; i < tabsize; i++)
+    {
+        rep = rep + " ";
+    } 
+
+    std::string newstring = str;
+    newstring = Replace(newstring, "    ", rep);
+    return newstring;
+}
 
 int main()
 {
@@ -355,5 +495,20 @@ std::string rep3 = "t";
 std::string test3 = Replace(ex3, old3, rep3);  //what if rep has a substring equal to old???
 std::cout << "old string: " << ex3 << "\n" << "new string: ";
 std::cout << test3 << std::endl; */
+
+/* std::string ex = "this has tabs";
+std::cout << ex << std::endl;
+ex = ExpandTabs(ex, 4);
+std::cout << ex << std::endl; */
+
+
+std::string ex = "two needlers in a haystack of needles full of needle is hard to find";
+
+std::vector<std::string> strs = Split(ex, "two");
+for (int i = 0; i < strs.size(); i++)
+{
+    std::cout << strs[i] << std::endl;
+}  
+
 
 }
