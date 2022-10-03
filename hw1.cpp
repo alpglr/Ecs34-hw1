@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cctype>
 #include <vector>
+#include <cmath>
 
 std::string Slice(const std::string &str, ssize_t start, ssize_t end=0)   
 {
@@ -111,53 +112,73 @@ std::string Strip(const std::string &str)
 }
 
 // Returns the center/left/right justified strings 
-std::string Center(const std::string &str, int width, char fill = ' ')  //FIX hard code and spacing
+std::string Center(const std::string &str, int width, char fill = ' ')  
 {
     std::string newstring = str;
 
-    std::string spaces = "";
-    int i = 0;
-    while (i < width)
+    if (width < 0)
+    return newstring;
+
+    if (width < (str.length()))
+    return newstring;
+
+    std::string leftspaces = "";
+    std::string rightspaces = "";
+
+    int filled = width - str.length();
+
+    if (width % 2 == 1)   //if odd
     {
-        spaces = spaces + fill;
-        i += 1;
+        leftspaces.append(floor(filled/2) +1, fill);
+        rightspaces.append(floor(filled/2), fill);
     }
-    newstring = spaces + newstring + spaces;
+
+    else
+    {
+        leftspaces.append((filled/2), fill);
+        rightspaces.append((filled/2), fill);
+    }
+
+    newstring = leftspaces + newstring + rightspaces;
 
     return newstring;
 
-    //NEGATIVE WIDTH ????
     
 }
 
-std::string LJust(const std::string &str, int width, char fill = ' ')   //fix hard code
+std::string LJust(const std::string &str, int width, char fill = ' ')   
 {
+
     std::string newstring = str;
 
+    if (width < 0)
+    return newstring;
+
+    if (width < (str.length()))
+    return newstring;
+
     std::string spaces = "";
-    int i = 0;
-    while (i < width)
-    {
-        spaces = spaces + fill;
-        i += 1;
-    }
-    newstring = spaces + newstring;
+
+    spaces.append(width - str.length(), fill);
+    newstring =  newstring+spaces;
 
     return newstring;
 } 
 
-std::string RJust(const std::string &str, int width, char fill = ' ')   //fix hard code
+std::string RJust(const std::string &str, int width, char fill = ' ')  
 {
     std::string newstring = str;
 
+    if (width < 0)
+    return newstring;
+
+    if (width < (str.length()))
+    return newstring;
+
     std::string spaces = "";
-    int i = 0;
-    while (i < width)
-    {
-        spaces = spaces + fill;
-        i += 1;
-    }
-    newstring = newstring + spaces;
+
+    spaces.append(width - str.length(), fill);    
+    newstring = spaces + newstring;
 
     return newstring;
 }
@@ -351,22 +372,55 @@ std::vector< std::string > Split(const std::string &str, const std::string &splt
 }
  
 // Joins a vector of strings into a single string 
-std::string Join(const std::string &str, const std::vector< std::string > 
-&vect); 
+std::string Join(const std::string &str, const std::vector< std::string > &vect)
+{
+    std::string newstring = "";
+
+    for (int i = 0; i < vect.size(); i++)
+    {
+        newstring = newstring + vect[i]+ str;
+    }
+
+    newstring = Slice(newstring, 0, newstring.length()-str.length());
+    return newstring;
+}
 
 // Replaces tabs with spaces aligning at the tabstops 
 std::string ExpandTabs(const std::string &str, int tabsize = 4)
 {
-    std::string rep = "";
-    for (int i = 0; i < tabsize; i++)
-    {
-        rep = rep + " ";
-    } 
+    //iterate char by char, find first /t, add to new string:
+    //(tabsize - index of /t % tabsize) spaces
+    //reset index
+    //if char != tab, add it to new string, increment index by 1
 
-    std::string newstring = str;
-    newstring = Replace(newstring, "    ", rep);
+    std::string newstring = "";
+    int index = 0;
+
+    for(int i = 0; i < str.length(); i++)
+    {
+        if(str[i] == '\t')    //if char is tab
+        { 
+            newstring.append(tabsize - index % tabsize, ' ');
+            index = 0;
+        } 
+
+        else    //if char is not tab
+        {
+            newstring = newstring + str[i];
+            if (str[i] == '\n')
+                index = 0;
+            else 
+                index += 1;
+        }         
+    }
+
     return newstring;
 }
+
+// Calculates the Levenshtein distance (edit distance) between the two  
+// strings. See https://en.wikipedia.org/wiki/Levenshtein_distance for  
+// more information. 
+int EditDistance(const std::string &left, const std::string &right, bool ignorecase=false);
 
 int main()
 {
@@ -502,13 +556,36 @@ ex = ExpandTabs(ex, 4);
 std::cout << ex << std::endl; */
 
 
-std::string ex = "two needlers in a haystack of needles full of needle is hard to find";
+/* std::string ex = "two needlers in a haystack of needles full of needle is hard to find";
 
 std::vector<std::string> strs = Split(ex, "two");
 for (int i = 0; i < strs.size(); i++)
 {
     std::cout << strs[i] << std::endl;
-}  
+}   */
+
+/* std::vector<std::string> strVec;
+strVec.push_back("Monday");
+strVec.push_back("Tuesday");
+strVec.push_back("Wednesday");
+strVec.push_back("Thursday");
+strVec.push_back("Friday");
+
+std::string mystr = Join(" ", strVec);
+
+std::cout << mystr << std::endl;
+ */
+
+
+/* std::string a = "\tfirst\tsecond\tth\nird";
+a = ExpandTabs(a, 8);
+
+std::cout << a << std::endl; */
+
+/* std::string ex = "this is a string";
+ex = Center(ex, 18);
+
+std::cout << ex << std::endl; */
 
 
 }
