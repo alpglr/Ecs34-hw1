@@ -306,6 +306,8 @@ std::vector< std::string > Split(const std::string &str, const std::string &splt
             //std::cout << "whitespace found at: " << index << std::endl;
             newstring = Slice(newstring, 0, index);
             //std::cout << "pushed to vector: " << newstring << std::endl;
+            if (index == 0)
+            strs.push_back("");    //TEST!!!!!
             if (index != 0)
                 strs.push_back(newstring);
             newstring = Slice(tempstr, index+1);
@@ -417,10 +419,47 @@ std::string ExpandTabs(const std::string &str, int tabsize = 4)
     return newstring;
 }
 
+
+
+
 // Calculates the Levenshtein distance (edit distance) between the two  
 // strings. See https://en.wikipedia.org/wiki/Levenshtein_distance for  
 // more information. 
-int EditDistance(const std::string &left, const std::string &right, bool ignorecase=false);
+int EditDistance(const std::string &left, const std::string &right, bool ignorecase=false)
+{
+
+
+   /*  function LevenshteinDistance(char s[1..m], char t[1..n]):
+  // for all i and j, d[i,j] will hold the Levenshtein distance between
+  // the first i characters of s and the first j characters of t
+  declare int d[0..m, 0..n]
+ 
+  set each element in d to zero
+ 
+  // source prefixes can be transformed into empty string by
+  // dropping all characters
+  for i from 1 to m:
+    d[i, 0] := i
+ 
+  // target prefixes can be reached from empty source prefix
+  // by inserting every character
+  for j from 1 to n:
+    d[0, j] := j
+ 
+  for j from 1 to n:
+    for i from 1 to m:
+      if s[i] = t[j]:
+        substitutionCost := 0
+      else:
+        substitutionCost := 1
+
+      d[i, j] := minimum(d[i-1, j] + 1,                   // deletion
+                         d[i, j-1] + 1,                   // insertion
+                         d[i-1, j-1] + substitutionCost)  // substitution
+ 
+  return d[m, n]
+   */
+}
 
 int main()
 {
@@ -548,7 +587,8 @@ std::string old3 = "is";
 std::string rep3 = "t";
 std::string test3 = Replace(ex3, old3, rep3);  //what if rep has a substring equal to old???
 std::cout << "old string: " << ex3 << "\n" << "new string: ";
-std::cout << test3 << std::endl; */
+std::cout << test3 << std::endl;  */
+
 
 /* std::string ex = "this has tabs";
 std::cout << ex << std::endl;
@@ -586,6 +626,7 @@ std::cout << a << std::endl; */
 ex = Center(ex, 18);
 
 std::cout << ex << std::endl; */
+
 
 
 }
