@@ -328,7 +328,7 @@ std::vector< std::string > Split(const std::string &str, const std::string &splt
             tempstr = newstring;
         }
 
-        if (!newstring.empty())
+        //if (!newstring.empty())
         strs.push_back(newstring);  //push the last elem
 
     }
@@ -346,6 +346,8 @@ std::vector< std::string > Split(const std::string &str, const std::string &splt
             //std::cout << "whitespace found at: " << index << std::endl;
             newstring = Slice(newstring, 0, index);
             //std::cout << "pushed to vector: " << newstring << std::endl;
+            if (index == 0)
+            strs.push_back("");    //TEST!!!!!
             if (index != 0)
                 strs.push_back(newstring);
             newstring = Slice(tempstr, (index+splt.length()));
@@ -353,7 +355,7 @@ std::vector< std::string > Split(const std::string &str, const std::string &splt
             tempstr = newstring;
         }
 
-        if (!newstring.empty())
+        //if (!newstring.empty())
         strs.push_back(newstring);  //push the last elem
     }
 
