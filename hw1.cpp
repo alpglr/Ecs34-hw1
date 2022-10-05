@@ -265,7 +265,7 @@ std::string Replace(const std::string &str, const std::string &old, const std::s
 // splt parameter is empty string, then split on white space
 std::vector< std::string > Split(const std::string &str, const std::string &splt = "")   //FIGURE OUT INDEX = 0 EDGE CASE
 {
-    std::vector<std::string> strs;     //https://cplusplus.com/forum/general/63211/
+   std::vector<std::string> strs;     //https://cplusplus.com/forum/general/63211/
     std::string tempstr = str;
     std::string newstring = str;
     std::vector< int > founds;    //list of split indexes    
@@ -354,14 +354,12 @@ std::vector< std::string > Split(const std::string &str, const std::string &splt
         
     index = str.find(splt, index+1);   
     }
-
     for (int i = 0; i < founds.size(); i++)
     {
         newstring.resize(founds[i]);
         strs.push_back(newstring);
         newstring = tempstr;
     }
-
     int lastelem = founds.size();
     std::cout << "index: " << lastelem << "element: " << founds[lastelem] << std::endl;
     std::cout << "sliced here: " << founds[lastelem] << std::endl;
@@ -369,8 +367,6 @@ std::vector< std::string > Split(const std::string &str, const std::string &splt
     strs.push_back(newstring); */
 
     return strs;
-
-
 }
  
 // Joins a vector of strings into a single string 
@@ -627,6 +623,21 @@ ex = Center(ex, 18);
 
 std::cout << ex << std::endl; */
 
+std::string ex = "Hoarew areare you  are today";
 
+
+/* std::vector<std::string> strVec = Split(ex, "are");
+for (int i = 0; i < strVec.size(); i++)
+{
+    std::cout<< strVec[i] << "this" << std::endl;
+} */
+
+ex = "How are you today?"; 
+
+std::vector<std::string> strs = Split(ex);
+for (int i = 0; i < strs.size(); i++)
+{
+    std::cout << strs[i] << std::endl;
+}
 
 }

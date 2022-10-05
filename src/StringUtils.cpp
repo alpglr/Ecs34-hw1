@@ -277,6 +277,13 @@ std::vector< std::string > Split(const std::string &str, const std::string &splt
     std::vector< int > founds;    //list of split indexes    
     int index; //= str.find(splt);
 
+    if (str.length() == 0)
+    {
+        std::string blank = "";
+        strs.push_back(blank);
+        return strs;
+    }
+
 
     if (splt.empty() || splt == " ") 
     {

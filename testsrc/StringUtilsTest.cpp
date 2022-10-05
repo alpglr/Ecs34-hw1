@@ -286,7 +286,7 @@ TEST(StringUtilsTest, Split){
     EXPECT_EQ(ReturnVector[3], " ");
     EXPECT_EQ(ReturnVector[4], "today?");
 
-    ReturnVector = StringUtils::Split("||How|are|you| |today?||", "|");
+    ReturnVector = StringUtils::Split("||How|are|you| |today?||", "|");   //FIX!!!!!!
     ASSERT_EQ(ReturnVector.size(), 9);
     EXPECT_EQ(ReturnVector[0], "");
     EXPECT_EQ(ReturnVector[1], "");
@@ -296,30 +296,30 @@ TEST(StringUtilsTest, Split){
     EXPECT_EQ(ReturnVector[5], " ");
     EXPECT_EQ(ReturnVector[6], "today?");
     EXPECT_EQ(ReturnVector[7], "");
-    EXPECT_EQ(ReturnVector[8], "");
+    EXPECT_EQ(ReturnVector[8], ""); 
 
-
+ 
     ReturnVector = StringUtils::Split("  How are you  today?  ");
     ASSERT_EQ(ReturnVector.size(), 4);
     EXPECT_EQ(ReturnVector[0], "How");
     EXPECT_EQ(ReturnVector[1], "are");
     EXPECT_EQ(ReturnVector[2], "you");
     EXPECT_EQ(ReturnVector[3], "today?");
+ 
 
-
-    ReturnVector = StringUtils::Split("Hoarew areare you  are today", "are");
+    ReturnVector = StringUtils::Split("Hoarew areare you  are today", "are");   //FIX
     ASSERT_EQ(ReturnVector.size(), 5);
     EXPECT_EQ(ReturnVector[0], "Ho");
     EXPECT_EQ(ReturnVector[1], "w ");
     EXPECT_EQ(ReturnVector[2], "");
     EXPECT_EQ(ReturnVector[3], " you  ");
-    EXPECT_EQ(ReturnVector[4], " today");
+    EXPECT_EQ(ReturnVector[4], " today"); 
 
-    
-    ReturnVector = StringUtils::Split("", "are");
+     
+    ReturnVector = StringUtils::Split("", "are"); 
     ASSERT_EQ(ReturnVector.size(), 1);
-    EXPECT_EQ(ReturnVector[0], "");
-
+    EXPECT_EQ(ReturnVector[0], "");   
+ 
 }
 
 TEST(StringUtilsTest, Join){
