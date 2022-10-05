@@ -46,6 +46,9 @@ std::string Slice(const std::string &str, ssize_t start, ssize_t end) noexcept{
 
 std::string Capitalize(const std::string &str) noexcept{
 
+    if (str.length() == 0)
+    return "";
+
     char first = str.at(0);
     char capt = toupper(first);
     std::string tempstr = Slice(str, 1);  //remove first letter
@@ -117,15 +120,21 @@ std::string Center(const std::string &str, int width, char fill) noexcept{
     if (width < (str.length()))
     return newstring;
 
+    if (str.length() == 0)
+    {
+    std::string newstring(width, fill);
+    return newstring;
+    }
+
     std::string leftspaces = "";
     std::string rightspaces = "";
 
     int filled = width - str.length();
 
-    if (width % 2 == 1)   //if odd
+    if (filled % 2 == 1)   //if odd
     {
-        leftspaces.append(floor(filled/2) +1, fill);
-        rightspaces.append(floor(filled/2), fill);
+        leftspaces.append(floor(filled/2), fill);
+        rightspaces.append(floor(filled/2) +1, fill);
     }
 
     else
@@ -148,6 +157,12 @@ std::string LJust(const std::string &str, int width, char fill) noexcept{
     if (width < (str.length()))
     return newstring;
 
+    if (str.length() == 0)
+    {
+    std::string newstring(width, fill);
+    return newstring;
+    }
+
     std::string spaces = "";
 
     spaces.append(width - str.length(), fill);
@@ -164,6 +179,12 @@ std::string RJust(const std::string &str, int width, char fill) noexcept{
 
     if (width < (str.length()))
     return newstring;
+
+    if (str.length() == 0)
+    {
+    std::string newstring(width, fill);
+    return newstring;
+    }
 
     std::string spaces = "";
 
@@ -381,7 +402,7 @@ std::string ExpandTabs(const std::string &str, int tabsize) noexcept{
     {
         if(str[i] == '\t')    //if char is tab
         { 
-            newstring.append(tabsize - index % tabsize, ' ');
+            newstring.append(tabsize - (index % tabsize), ' ');  //how many spaces to add
             index = 0;
         } 
 
