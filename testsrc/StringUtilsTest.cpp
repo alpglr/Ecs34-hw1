@@ -374,5 +374,34 @@ TEST(StringUtilsTest, ExpandTabs){
 }
 
 TEST(StringUtilsTest, EditDistance){
-    
+    int ReturnVal;
+
+    ReturnVal = StringUtils::EditDistance("alp", "ecs", true);
+    EXPECT_EQ(ReturnVal, 3);
+
+    ReturnVal = StringUtils::EditDistance("ALP", "ecs", false);
+    EXPECT_EQ(ReturnVal, 3);
+
+     ReturnVal = StringUtils::EditDistance("ALP", "alp", true);   
+    EXPECT_EQ(ReturnVal, 0); 
+
+    ReturnVal = StringUtils::EditDistance("alp", "ALP", false);
+    EXPECT_EQ(ReturnVal, 3);   
+
+    ReturnVal = StringUtils::EditDistance("alp g", "alp", false);   
+    EXPECT_EQ(ReturnVal, 2);   
+
+    ReturnVal = StringUtils::EditDistance("aLp g", "alp", false);   
+    EXPECT_EQ(ReturnVal, 3);
+
+    ReturnVal = StringUtils::EditDistance("alp", "", true);
+    EXPECT_EQ(ReturnVal, 3);
+
+    ReturnVal = StringUtils::EditDistance("", "ecs", false);
+    EXPECT_EQ(ReturnVal, 3);
+
+
+    ReturnVal = StringUtils::EditDistance(" ", "ecs", false);
+    EXPECT_EQ(ReturnVal, 3);
 }
+

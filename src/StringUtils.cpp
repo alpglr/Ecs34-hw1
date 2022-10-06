@@ -58,6 +58,10 @@ std::string Capitalize(const std::string &str) noexcept{
 
 std::string Upper(const std::string &str) noexcept{
     std::string newstring = str;
+
+    if (str.length() == 0)
+    return "";
+
     for (int i = 0; i < str.length(); i++)
     {
         newstring[i] = toupper(str[i]);
@@ -68,6 +72,11 @@ std::string Upper(const std::string &str) noexcept{
 
 std::string Lower(const std::string &str) noexcept{
     std::string newstring = str;
+
+    if (str.length() == 0)
+    return "";
+
+    
     for (int i = 0; i < str.length(); i++)
     {
         newstring[i] = tolower(str[i]);
@@ -428,43 +437,87 @@ std::string ExpandTabs(const std::string &str, int tabsize) noexcept{
     return newstring;
 }
 
-int EditDistance(const std::string &left, const std::string &right, bool ignorecase) noexcept{
+int EditDistance(const std::string &left, const std::string &right, bool ignorecase) noexcept{   // == case sensitive 
     // Calculates the Levenshtein distance (edit distance) between the two  
     // strings. See https://en.wikipedia.org/wiki/Levenshtein_distance for  
     // more information. 
 
-     /*  function LevenshteinDistance(char s[1..m], char t[1..n]):
-  // for all i and j, d[i,j] will hold the Levenshtein distance between
-  // the first i characters of s and the first j characters of t
-  declare int d[0..m, 0..n]
- 
-  set each element in d to zero
- 
-  // source prefixes can be transformed into empty string by
-  // dropping all characters
-  for i from 1 to m:
-    d[i, 0] := i
- 
-  // target prefixes can be reached from empty source prefix
-  // by inserting every character
-  for j from 1 to n:
-    d[0, j] := j
- 
-  for j from 1 to n:
-    for i from 1 to m:
-      if s[i] = t[j]:
-        substitutionCost := 0
-      else:
-        substitutionCost := 1
+    int l = left.length();
+    int r = right.length();
 
-      d[i, j] := minimum(d[i-1, j] + 1,                   // deletion
-                         d[i, j-1] + 1,                   // insertion
-                         d[i-1, j-1] + substitutionCost)  // substitution
- 
-  return d[m, n]
-   */
+    //start from the last character
+    //if last char is the same for both strings, skip to the char 1 before 
+    //if last char is not the same, try insertion, deletion, and substition on the last char of the first string
 
-    return 0;
-}
+
+
+    int results[l+1][r+1];  //make a table to push each result to
+
+        for (int i = 0; i <= l; i++) 
+    {
+        for (int j = 0; j <= r; j++)
+        {
+            if (i == 0)   //left length = 0
+            results[i][j] = j;   //if the left string is empty, only way is to insert each char of right to left
+
+            else if (j == 0)  //right length = 0
+            results[i][j] = i;  //if right string is empty, only way is to remove each char of right
+
+
+            else if (ignorecase==true)               //if ignoring case, make left char and right char the same case to make == case insensitive
+            {
+                if (toupper(left[i-1]) == toupper(right[j-1]))
+                    results[i][j] = results[i-1][j-1];      //if last char is the same for each string, move to 1 before
+                else    //if last char is not the same
+                {
+                    int insertion = results[i][j-1];
+                    int deletion = results[i-1][j]; 
+                    int replace = results[i-1][j-1];
+
+                    int op = std::min(std::min(insertion, deletion), replace);   //push the smallest operation 
+
+                    results[i][j] = 1 + op;
+                }
+            }
+
+            else if (ignorecase == false)   //if ignorecase is false, compare cases. == compares cases by default so if they're equal, move to 1 before
+            {
+                if (left[i-1] == right[j-1])   //if chars are same
+                results[i][j] = results[i-1][j-1];
+            
+
+                else   //if last char is not the same
+                {
+                    if ( toupper(left[i-1]) == toupper(right[j-1]) ) //if same letter different case
+                    {
+                /* int insertion = results[i][j-1];
+                int deletion = results[i-1][j]; */
+                int replace = results[i-1][j-1];
+
+                //int op = std::min(std::min(insertion, deletion), replace);   //push the smallest operation 
+
+                results[i][j] = 1 + replace;
+                    }
+
+                    else     //if different letters
+                    {
+                int insertion = results[i][j-1];
+                int deletion = results[i-1][j]; 
+                int replace = results[i-1][j-1];
+
+                int op = std::min(std::min(insertion, deletion), replace);   //push the smallest operation 
+
+                results[i][j] = 1 + op;
+                    }
+
+                }
+            }
+        }
+    }
+
+    return results[l][r];
+
+    }
+
 
 };

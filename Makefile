@@ -31,5 +31,5 @@ directories:
 
 .PHONY : clean
 clean :
-		-rm edit $(BIN_DIR)
-		-rm edit $(OBJ_DIR)
+		-rm $(BIN_DIR)
+		-rm $(OBJ_DIR)
